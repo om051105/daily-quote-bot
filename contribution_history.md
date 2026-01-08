@@ -10,3 +10,4 @@
 - [x] 2026-01-04: **Solved LeetCode #1 Two Sum**
 - [x] 2026-01-06: **Solved LeetCode #20 Valid Parentheses**
 - [x] 2026-01-07: **Solved LeetCode #21 Merge Two Sorted Lists**
+- [x] 2026-01-08: **Solved LeetCode #121 Best Time to Buy and Sell Stock**
