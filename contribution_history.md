@@ -11,3 +11,4 @@
 - [x] 2026-01-06: **Solved LeetCode #20 Valid Parentheses**
 - [x] 2026-01-07: **Solved LeetCode #21 Merge Two Sorted Lists**
 - [x] 2026-01-08: **Solved LeetCode #121 Best Time to Buy and Sell Stock**
+- [x] 2026-01-09: **Solved LeetCode #125 Valid Palindrome**
