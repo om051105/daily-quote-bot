@@ -13,3 +13,4 @@
 - [x] 2026-01-08: **Solved LeetCode #121 Best Time to Buy and Sell Stock**
 - [x] 2026-01-09: **Solved LeetCode #125 Valid Palindrome**
 - [x] 2026-01-10: **Solved LeetCode #226 Invert Binary Tree**
+- [x] 2026-01-14: **Solved LeetCode #242 Valid Anagram**
