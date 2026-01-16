@@ -8,27 +8,41 @@ https.get(url, (res) => {
     res.on('data', (chunk) => { data += chunk; });
     res.on('end', () => {
         // Simple Regex Parse to avoid heavy xml2js dependency for a simple bot
-        const titleMatch = data.match(/<title>(.*?)<\/title>/);
-        const linkMatch = data.match(/<id>(.*?)<\/id>/);
-        const summaryMatch = data.match(/<summary>(.*?)<\/summary>/s);
+        const entryMatch = data.match(/<entry>([\s\S]*?)<\/entry>/);
 
-        if (titleMatch && linkMatch) {
-            const title = titleMatch[1].replace('arxiv:', '').trim();
-            const link = linkMatch[1];
-            const date = new Date().toISOString().split('T')[0];
+        if (entryMatch) {
+            const entryData = entryMatch[1];
+            const titleMatch = entryData.match(/<title>([\s\S]*?)<\/title>/);
+            const linkMatch = entryData.match(/<id>([\s\S]*?)<\/id>/);
+            const summaryMatch = entryData.match(/<summary>([\s\S]*?)<\/summary>/);
 
-            const entry = \| \ | [\](\) | AI/ML |\n\;
-            
-            // Append to PAPERS.md
-            if (!fs.existsSync('PAPERS.md')) {
-                fs.writeFileSync('PAPERS.md', '| Date | Title | Category |\n|---|---|---|\n');
+            if (titleMatch && linkMatch) {
+                const title = titleMatch[1].replace('arxiv:', '').replace(/\n/g, ' ').trim();
+                const link = linkMatch[1];
+                const date = new Date().toISOString().split('T')[0];
+
+                const entry = `| ${date} | [${title}](${link}) | AI/ML |\n`;
+
+                // Append to PAPERS.md
+                if (!fs.existsSync('PAPERS.md')) {
+                    fs.writeFileSync('PAPERS.md', '| Date | Title | Category |\n|---|---|---|\n');
+                }
+                fs.appendFileSync('PAPERS.md', entry);
+                console.log('Added paper:', title);
+
+                // Also update README to show latest
+                const readmeContent = `# Daily AI Research Tracker
+
+I automatically track the latest papers submitted to ArXiv (cs.AI).
+
+### 🔥 Latest Discovery (${date})
+**${title}**
+[Read Paper](${link})
+
+[View Full Archive](PAPERS.md)
+`;
+                fs.writeFileSync('README.md', readmeContent);
             }
-            fs.appendFileSync('PAPERS.md', entry);
-            console.log('Added paper:', title);
-            
-            // Also update README to show latest
-            const readmeContent = \#  Daily AI Research Tracker\n\nI automatically track the latest papers submitted to ArXiv (cs.AI).\n\n### 🔥 Latest Discovery (\)\n**\**\n[Read Paper](\)\n\n[View Full Archive](PAPERS.md)\;
-            fs.writeFileSync('README.md', readmeContent);
         }
     });
 });
