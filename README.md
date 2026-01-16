@@ -1,4 +1,4 @@
-# Daily AI Research Tracker ![Daily AI Research](https://github.com/om051105/daily-quote-bot/actions/workflows/daily.yml/badge.svg)
+# Daily AI Research Tracker
 
 I automatically track the latest papers submitted to ArXiv (cs.AI).
 
