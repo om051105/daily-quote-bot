@@ -24,5 +24,5 @@ jobs:
           git config --global user.name 'ArXiv Bot'
           git config --global user.email 'bot@noreply.github.com'
           git add README.md PAPERS.md
-          git commit -m "bot: Update Daily Research" || exit 0
+          git commit -m "bot: Update Daily Research @om051105" || exit 0
           git push
