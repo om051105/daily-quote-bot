@@ -14,3 +14,4 @@
 | 2026-01-19 | [Do explanations generalize across large reasoning models?](http://arxiv.org/abs/2601.11517v1) | AI/ML |
 | 2026-01-20 | [Do explanations generalize across large reasoning models?](http://arxiv.org/abs/2601.11517v1) | AI/ML |
 | 2026-01-21 | [VideoMaMa: Mask-Guided Video Matting via Generative Prior](http://arxiv.org/abs/2601.14255v1) | AI/ML |
+| 2026-01-22 | [Iterative Refinement Improves Compositional Image Generation](http://arxiv.org/abs/2601.15286v1) | AI/ML |
