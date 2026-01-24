@@ -16,3 +16,4 @@
 | 2026-01-21 | [VideoMaMa: Mask-Guided Video Matting via Generative Prior](http://arxiv.org/abs/2601.14255v1) | AI/ML |
 | 2026-01-22 | [Iterative Refinement Improves Compositional Image Generation](http://arxiv.org/abs/2601.15286v1) | AI/ML |
 | 2026-01-23 | [Why Can't I Open My Drawer? Mitigating Object-Driven Shortcuts in Zero-Shot Compositional Action Recognition](http://arxiv.org/abs/2601.16211v1) | AI/ML |
+| 2026-01-24 | [Why Can't I Open My Drawer? Mitigating Object-Driven Shortcuts in Zero-Shot Compositional Action Recognition](http://arxiv.org/abs/2601.16211v1) | AI/ML |
