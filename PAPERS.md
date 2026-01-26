@@ -18,3 +18,4 @@
 | 2026-01-23 | [Why Can't I Open My Drawer? Mitigating Object-Driven Shortcuts in Zero-Shot Compositional Action Recognition](http://arxiv.org/abs/2601.16211v1) | AI/ML |
 | 2026-01-24 | [Why Can't I Open My Drawer? Mitigating Object-Driven Shortcuts in Zero-Shot Compositional Action Recognition](http://arxiv.org/abs/2601.16211v1) | AI/ML |
 | 2026-01-25 | [Why Can't I Open My Drawer? Mitigating Object-Driven Shortcuts in Zero-Shot Compositional Action Recognition](http://arxiv.org/abs/2601.16211v1) | AI/ML |
+| 2026-01-26 | [A Scalable Measure of Loss Landscape Curvature for Analyzing the Training Dynamics of LLMs](http://arxiv.org/abs/2601.16979v1) | AI/ML |
