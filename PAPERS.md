@@ -22,3 +22,4 @@
 | 2026-01-27 | [ctELM: Decoding and Manipulating Embeddings of Clinical Trials with Embedding Language Models](http://arxiv.org/abs/2601.18796v1) | AI/ML |
 | 2026-01-28 | [M-SGWR: Multiscale Similarity and Geographically Weighted Regression](http://arxiv.org/abs/2601.19888v1) | AI/ML |
 | 2026-01-29 | [Evolutionary Strategies lead to Catastrophic Forgetting in LLMs](http://arxiv.org/abs/2601.20861v1) | AI/ML |
+| 2026-01-30 | [RedSage: A Cybersecurity Generalist LLM](http://arxiv.org/abs/2601.22159v1) | AI/ML |
