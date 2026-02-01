@@ -24,3 +24,4 @@
 | 2026-01-29 | [Evolutionary Strategies lead to Catastrophic Forgetting in LLMs](http://arxiv.org/abs/2601.20861v1) | AI/ML |
 | 2026-01-30 | [RedSage: A Cybersecurity Generalist LLM](http://arxiv.org/abs/2601.22159v1) | AI/ML |
 | 2026-01-31 | [RedSage: A Cybersecurity Generalist LLM](http://arxiv.org/abs/2601.22159v1) | AI/ML |
+| 2026-02-01 | [RedSage: A Cybersecurity Generalist LLM](http://arxiv.org/abs/2601.22159v1) | AI/ML |
