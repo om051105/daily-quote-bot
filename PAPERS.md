@@ -28,3 +28,4 @@
 | 2026-02-02 | [VideoGPA: Distilling Geometry Priors for 3D-Consistent Video Generation](http://arxiv.org/abs/2601.23286v1) | AI/ML |
 | 2026-02-03 | [Reward-free Alignment for Conflicting Objectives](http://arxiv.org/abs/2602.02495v1) | AI/ML |
 | 2026-02-04 | [PLATE: Plasticity-Tunable Efficient Adapters for Geometry-Aware Continual Learning](http://arxiv.org/abs/2602.03846v1) | AI/ML |
+| 2026-02-05 | [Protein Autoregressive Modeling via Multiscale Structure Generation](http://arxiv.org/abs/2602.04883v1) | AI/ML |
