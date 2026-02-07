@@ -30,3 +30,4 @@
 | 2026-02-04 | [PLATE: Plasticity-Tunable Efficient Adapters for Geometry-Aware Continual Learning](http://arxiv.org/abs/2602.03846v1) | AI/ML |
 | 2026-02-05 | [Protein Autoregressive Modeling via Multiscale Structure Generation](http://arxiv.org/abs/2602.04883v1) | AI/ML |
 | 2026-02-06 | [Shared LoRA Subspaces for almost Strict Continual Learning](http://arxiv.org/abs/2602.06043v1) | AI/ML |
+| 2026-02-07 | [Shared LoRA Subspaces for almost Strict Continual Learning](http://arxiv.org/abs/2602.06043v1) | AI/ML |
