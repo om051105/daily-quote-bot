@@ -32,3 +32,4 @@
 | 2026-02-06 | [Shared LoRA Subspaces for almost Strict Continual Learning](http://arxiv.org/abs/2602.06043v1) | AI/ML |
 | 2026-02-07 | [Shared LoRA Subspaces for almost Strict Continual Learning](http://arxiv.org/abs/2602.06043v1) | AI/ML |
 | 2026-02-08 | [Shared LoRA Subspaces for almost Strict Continual Learning](http://arxiv.org/abs/2602.06043v1) | AI/ML |
+| 2026-02-09 | [Learning a Generative Meta-Model of LLM Activations](http://arxiv.org/abs/2602.06964v1) | AI/ML |
