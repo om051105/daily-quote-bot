@@ -2,8 +2,8 @@
 
 I automatically track the latest papers submitted to ArXiv (cs.AI).
 
-### 🔥 Latest Discovery (2026-02-09)
-**Learning a Generative Meta-Model of LLM Activations**
-[Read Paper](http://arxiv.org/abs/2602.06964v1)
+### 🔥 Latest Discovery (2026-02-10)
+**Robustness Is a Function, Not a Number: A Factorized Comprehensive Study of OOD Robustness in Vision-Based Driving**
+[Read Paper](http://arxiv.org/abs/2602.09018v1)
 
 [View Full Archive](PAPERS.md)
