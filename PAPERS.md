@@ -35,3 +35,4 @@
 | 2026-02-09 | [Learning a Generative Meta-Model of LLM Activations](http://arxiv.org/abs/2602.06964v1) | AI/ML |
 | 2026-02-10 | [Robustness Is a Function, Not a Number: A Factorized Comprehensive Study of OOD Robustness in Vision-Based Driving](http://arxiv.org/abs/2602.09018v1) | AI/ML |
 | 2026-02-11 | [Biases in the Blind Spot: Detecting What LLMs Fail to Mention](http://arxiv.org/abs/2602.10117v1) | AI/ML |
+| 2026-02-12 | [Beyond VLM-Based Rewards: Diffusion-Native Latent Reward Modeling](http://arxiv.org/abs/2602.11146v1) | AI/ML |
