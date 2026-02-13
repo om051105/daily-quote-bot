@@ -2,8 +2,8 @@
 
 I automatically track the latest papers submitted to ArXiv (cs.AI).
 
-### 🔥 Latest Discovery (2026-02-12)
-**Beyond VLM-Based Rewards: Diffusion-Native Latent Reward Modeling**
-[Read Paper](http://arxiv.org/abs/2602.11146v1)
+### 🔥 Latest Discovery (2026-02-13)
+**Scaling Verification Can Be More Effective than Scaling Policy Learning for Vision-Language-Action Alignment**
+[Read Paper](http://arxiv.org/abs/2602.12281v1)
 
 [View Full Archive](PAPERS.md)
