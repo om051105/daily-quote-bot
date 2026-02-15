@@ -38,3 +38,4 @@
 | 2026-02-12 | [Beyond VLM-Based Rewards: Diffusion-Native Latent Reward Modeling](http://arxiv.org/abs/2602.11146v1) | AI/ML |
 | 2026-02-13 | [Scaling Verification Can Be More Effective than Scaling Policy Learning for Vision-Language-Action Alignment](http://arxiv.org/abs/2602.12281v1) | AI/ML |
 | 2026-02-14 | [Scaling Verification Can Be More Effective than Scaling Policy Learning for Vision-Language-Action Alignment](http://arxiv.org/abs/2602.12281v1) | AI/ML |
+| 2026-02-15 | [Scaling Verification Can Be More Effective than Scaling Policy Learning for Vision-Language-Action Alignment](http://arxiv.org/abs/2602.12281v1) | AI/ML |
