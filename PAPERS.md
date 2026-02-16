@@ -39,3 +39,4 @@
 | 2026-02-13 | [Scaling Verification Can Be More Effective than Scaling Policy Learning for Vision-Language-Action Alignment](http://arxiv.org/abs/2602.12281v1) | AI/ML |
 | 2026-02-14 | [Scaling Verification Can Be More Effective than Scaling Policy Learning for Vision-Language-Action Alignment](http://arxiv.org/abs/2602.12281v1) | AI/ML |
 | 2026-02-15 | [Scaling Verification Can Be More Effective than Scaling Policy Learning for Vision-Language-Action Alignment](http://arxiv.org/abs/2602.12281v1) | AI/ML |
+| 2026-02-16 | [Semantic Chunking and the Entropy of Natural Language](http://arxiv.org/abs/2602.13194v1) | AI/ML |
