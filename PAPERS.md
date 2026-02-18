@@ -41,3 +41,4 @@
 | 2026-02-15 | [Scaling Verification Can Be More Effective than Scaling Policy Learning for Vision-Language-Action Alignment](http://arxiv.org/abs/2602.12281v1) | AI/ML |
 | 2026-02-16 | [Semantic Chunking and the Entropy of Natural Language](http://arxiv.org/abs/2602.13194v1) | AI/ML |
 | 2026-02-17 | [Long Context, Less Focus: A Scaling Gap in LLMs Revealed through Privacy and Personalization](http://arxiv.org/abs/2602.15028v1) | AI/ML |
+| 2026-02-18 | [Perceptive Humanoid Parkour: Chaining Dynamic Human Skills via Motion Matching](http://arxiv.org/abs/2602.15827v1) | AI/ML |
