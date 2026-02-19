@@ -42,3 +42,4 @@
 | 2026-02-16 | [Semantic Chunking and the Entropy of Natural Language](http://arxiv.org/abs/2602.13194v1) | AI/ML |
 | 2026-02-17 | [Long Context, Less Focus: A Scaling Gap in LLMs Revealed through Privacy and Personalization](http://arxiv.org/abs/2602.15028v1) | AI/ML |
 | 2026-02-18 | [Perceptive Humanoid Parkour: Chaining Dynamic Human Skills via Motion Matching](http://arxiv.org/abs/2602.15827v1) | AI/ML |
+| 2026-02-19 | [Policy Compiler for Secure Agentic Systems](http://arxiv.org/abs/2602.16708v1) | AI/ML |
