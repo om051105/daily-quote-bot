@@ -45,3 +45,4 @@
 | 2026-02-19 | [Policy Compiler for Secure Agentic Systems](http://arxiv.org/abs/2602.16708v1) | AI/ML |
 | 2026-02-20 | [Sink-Aware Pruning for Diffusion Language Models](http://arxiv.org/abs/2602.17664v1) | AI/ML |
 | 2026-02-22 | [Sink-Aware Pruning for Diffusion Language Models](http://arxiv.org/abs/2602.17664v1) | AI/ML |
+| 2026-02-23 | [Unifying approach to uniform expressivity of graph neural networks](http://arxiv.org/abs/2602.18409v1) | AI/ML |
