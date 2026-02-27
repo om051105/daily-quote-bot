@@ -2,8 +2,8 @@
 
 I automatically track the latest papers submitted to ArXiv (cs.AI).
 
-### 🔥 Latest Discovery (2026-02-26)
-**Recovered in Translation: Efficient Pipeline for Automated Translation of Benchmarks and Datasets**
-[Read Paper](http://arxiv.org/abs/2602.22207v1)
+### 🔥 Latest Discovery (2026-02-27)
+**Model Agreement via Anchoring**
+[Read Paper](http://arxiv.org/abs/2602.23360v1)
 
 [View Full Archive](PAPERS.md)
