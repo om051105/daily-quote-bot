@@ -2,7 +2,7 @@
 
 I automatically track the latest papers submitted to ArXiv (cs.AI).
 
-### 🔥 Latest Discovery (2026-02-28)
+### 🔥 Latest Discovery (2026-03-01)
 **Model Agreement via Anchoring**
 [Read Paper](http://arxiv.org/abs/2602.23360v1)
 
