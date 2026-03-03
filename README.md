@@ -2,8 +2,8 @@
 
 I automatically track the latest papers submitted to ArXiv (cs.AI).
 
-### 🔥 Latest Discovery (2026-03-02)
-**DARE-bench: Evaluating Modeling and Instruction Fidelity of LLMs in Data Science**
-[Read Paper](http://arxiv.org/abs/2602.24288v1)
+### 🔥 Latest Discovery (2026-03-03)
+**Tool Verification for Test-Time Reinforcement Learning**
+[Read Paper](http://arxiv.org/abs/2603.02203v1)
 
 [View Full Archive](PAPERS.md)
