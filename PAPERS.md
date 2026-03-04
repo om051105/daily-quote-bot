@@ -53,3 +53,4 @@
 | 2026-03-01 | [Model Agreement via Anchoring](http://arxiv.org/abs/2602.23360v1) | AI/ML |
 | 2026-03-02 | [DARE-bench: Evaluating Modeling and Instruction Fidelity of LLMs in Data Science](http://arxiv.org/abs/2602.24288v1) | AI/ML |
 | 2026-03-03 | [Tool Verification for Test-Time Reinforcement Learning](http://arxiv.org/abs/2603.02203v1) | AI/ML |
+| 2026-03-04 | [How to Peel with a Knife: Aligning Fine-Grained Manipulation with Human Preference](http://arxiv.org/abs/2603.03280v1) | AI/ML |
