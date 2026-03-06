@@ -55,3 +55,4 @@
 | 2026-03-03 | [Tool Verification for Test-Time Reinforcement Learning](http://arxiv.org/abs/2603.02203v1) | AI/ML |
 | 2026-03-04 | [How to Peel with a Knife: Aligning Fine-Grained Manipulation with Human Preference](http://arxiv.org/abs/2603.03280v1) | AI/ML |
 | 2026-03-05 | [A Dual-Helix Governance Approach Towards Reliable Agentic AI for WebGIS Development](http://arxiv.org/abs/2603.04390v1) | AI/ML |
+| 2026-03-06 | [RoboPocket: Improve Robot Policies Instantly with Your Phone](http://arxiv.org/abs/2603.05504v1) | AI/ML |
