@@ -58,3 +58,4 @@
 | 2026-03-06 | [RoboPocket: Improve Robot Policies Instantly with Your Phone](http://arxiv.org/abs/2603.05504v1) | AI/ML |
 | 2026-03-07 | [RoboPocket: Improve Robot Policies Instantly with Your Phone](http://arxiv.org/abs/2603.05504v1) | AI/ML |
 | 2026-03-08 | [RoboPocket: Improve Robot Policies Instantly with Your Phone](http://arxiv.org/abs/2603.05504v1) | AI/ML |
+| 2026-03-09 | [BEVLM: Distilling Semantic Knowledge from LLMs into Bird's-Eye View Representations](http://arxiv.org/abs/2603.06576v1) | AI/ML |
