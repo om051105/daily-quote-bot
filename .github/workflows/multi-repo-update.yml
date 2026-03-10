@@ -1,0 +1,24 @@
+name: Multi-Repo Daily Updater
+
+on:
+  schedule:
+    - cron: '30 21 * * *'  # 9:30 PM UTC = ~3 AM IST daily
+  workflow_dispatch:        # allows manual trigger from GitHub Actions tab
+
+jobs:
+  multi-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout daily-quote-bot
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Run multi-repo updater
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_USERNAME: om051105
+        run: node multi-update.js
