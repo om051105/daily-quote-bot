@@ -4,9 +4,7 @@ on:
   schedule:
     - cron: '0 9 * * *' # Run at 9am daily
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  # Removed 'push' trigger to prevent infinite loops and conflicts
 
 jobs:
   update-readme:
