@@ -16,12 +16,19 @@ on:
         required: true
         default: '0.3'
 
+# Lock all workflows in the repo to ONE run at a time to prevent push conflicts
+concurrency:
+  group: github-activity-maintenance
+  cancel-in-progress: false
+
 jobs:
   backfill:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout daily-quote-bot
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -34,8 +41,6 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GH_USERNAME: om051105
         run: |
-          # Pass inputs to script via env vars or modify script to read them
-          # For simplicity, we'll modify the script to look for these env vars
           export START_DATE="${{ github.event.inputs.start_date }}"
           export END_DATE="${{ github.event.inputs.end_date }}"
           export FILL_DENSITY="${{ github.event.inputs.density }}"

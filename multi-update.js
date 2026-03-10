@@ -382,7 +382,8 @@ async function main() {
   try {
     run('git add rotation_log.json', __dirname);
     safe('git commit -m "chore: update rotation log"', __dirname);
-    safe('git push', __dirname);
+    safe('git pull --rebase origin main', __dirname);
+    safe('git push origin main', __dirname);
   } catch(_) {}
 
   console.log(`\n${'─'.repeat(55)}`);
