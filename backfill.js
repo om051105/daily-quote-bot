@@ -4,8 +4,13 @@ const path = require('path');
 const os = require('os');
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
-const USERNAME = 'om051105';
-const TOKEN    = process.env.GH_PAT; // Reuse the secret
+const USERNAME = process.env.GH_USERNAME || 'om051105';
+const TOKEN    = process.env.GH_PAT;
+
+// Configurable range and density
+const START_DATE   = process.env.START_DATE   || '2025-01-01';
+const END_DATE     = process.env.END_DATE     || '2025-12-31';
+const FILL_DENSITY = parseFloat(process.env.FILL_DENSITY || '0.3');
 
 // List of target repos to spread the backfill across
 const TARGET_REPOS = [
@@ -91,13 +96,10 @@ async function start() {
     return;
   }
 
-  // Example: Fill gaps in 2025
-  // You can adjust these dates
-  const start2025 = '2025-01-01';
-  const end2025 = '2025-12-31';
+  console.log(`📡 Backfill Config: ${START_DATE} to ${END_DATE} (Density: ${FILL_DENSITY})`);
 
   for (const repo of TARGET_REPOS) {
-    await backfillRepo(repo, start2025, end2025, 0.2); // 20% density across 5 repos = very full graph
+    await backfillRepo(repo, START_DATE, END_DATE, FILL_DENSITY / TARGET_REPOS.length);
     await sleep(2000);
   }
 }
