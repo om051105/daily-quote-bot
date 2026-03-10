@@ -43,16 +43,18 @@ const LANG_MAP = {
 };
 
 const COMMIT_MESSAGES = [
-  'feat: add utility helper function',
-  'feat: implement new helper module',
-  'refactor: improve code structure',
-  'feat: add validation utility',
-  'feat: add error handling helper',
-  'feat: add data processing utility',
-  'refactor: optimize common functions',
-  'feat: add reusable component',
-  'feat: add new utility module',
-  'chore: improve code quality',
+  'refactor: optimize internal logic for better performance',
+  'feat: implement reusable data utility functions',
+  'fix: address minor edge cases in data processing',
+  'style: improve code readability and consistent formatting',
+  'refactor: cleanup redundant code and improve structure',
+  'feat: add validation helpers for core modules',
+  'docs: clarify function usage in utility modules',
+  'feat: implement cross-platform helper functions',
+  'perf: optimize loops and conditional logic',
+  'chore: housekeeping and minor code refinements',
+  'refactor: modularize utility functions for better reuse',
+  'fix: minor type checking and null safety improvements',
 ];
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
@@ -128,9 +130,12 @@ function extractCode(text) {
 
 // ─── GENERATE FILE NAME ──────────────────────────────────────────────────────
 function generateFileName(repoName, ext) {
-  const suffixes = ['utils', 'helpers', 'validators', 'formatter', 'converter', 'parser', 'handler', 'processor'];
+  const prefixes = ['core', 'shared', 'app', 'base', 'internal', 'common', 'lib'];
+  const suffixes = ['utils', 'helpers', 'logic', 'tools', 'service', 'handler', 'lib'];
+  const prefix = prefixes[randomInt(0, prefixes.length - 1)];
   const suffix = suffixes[randomInt(0, suffixes.length - 1)];
-  return `${suffix}${ext}`;
+  const usePrefix = Math.random() > 0.5;
+  return usePrefix ? `${prefix}_${suffix}${ext}` : `${suffix}${ext}`;
 }
 
 // ─── MAIN REPO PROCESSOR ─────────────────────────────────────────────────────
