@@ -2,8 +2,8 @@ name: Project Maintenance & Quality Check
 
 on:
   schedule:
-    - cron: '30 21 * * *'  # 9:30 PM UTC = ~3 AM IST daily
-  workflow_dispatch:        # allows manual trigger from GitHub Actions tab
+    - cron: '0 23 * * *'  # 11 PM UTC base, random delay added inside
+  workflow_dispatch:
 
 jobs:
   multi-update:
@@ -11,6 +11,12 @@ jobs:
     steps:
       - name: Checkout daily-quote-bot
         uses: actions/checkout@v3
+
+      - name: Random delay (looks more natural)
+        run: |
+          DELAY=$((RANDOM % 5400))
+          echo "Sleeping ${DELAY}s before starting..."
+          sleep $DELAY
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -22,4 +28,5 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GH_USERNAME: om051105
+          NOTIFY_ISSUE: '1'
         run: node multi-update.js
