@@ -4,7 +4,12 @@ on:
   schedule:
     - cron: '0 9 * * *' # Run at 9am daily
   workflow_dispatch:
-  # Removed 'push' trigger to prevent infinite loops and conflicts
+  # NOTE: 'push' trigger removed to prevent infinite loop conflicts
+
+# Prevent two instances running at the same time
+concurrency:
+  group: daily-ai-research
+  cancel-in-progress: false
 
 jobs:
   update-readme:
@@ -13,15 +18,23 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Full history needed for rebase
+
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+
       - run: node index.js
+
       - name: Commit changes
         run: |
           git config --global user.name 'ArXiv Bot'
           git config --global user.email 'bot@noreply.github.com'
           git add README.md PAPERS.md
-          git commit -m "bot: Update Daily Research @om051105" || exit 0
+          # Exit cleanly if no changes
+          git diff --cached --quiet && exit 0
+          git commit -m "bot: Update Daily Research @om051105"
+          # Pull any remote changes before pushing
           git pull --rebase origin main
-          git push
+          git push origin main
