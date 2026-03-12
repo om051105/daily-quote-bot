@@ -56,7 +56,7 @@ const CODE_TEMPLATES = {
     (id) => `// String helpers - module ${id}\n\nfunction capitalize(str) {\n  if (!str) return '';\n  return str.charAt(0).toUpperCase() + str.slice(1);\n}\n\nfunction truncate(str, len) {\n  if (str.length <= len) return str;\n  return str.slice(0, len - 3) + '...';\n}\n\nmodule.exports = { capitalize, truncate };`,
   ],
   Python: [
-    (id) => `# Utility functions - module ${id}\n\ndef clamp(value, min_val, max_val):\n    return max(min_val, min(value, max_val))\n\ndef flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(item)\n        else:\n            result.append(item)\n    return result\n\ndef unique(items):\n    seen = set()\n    return [x for x in items if x not in seen and not seen.add(x)]`,
+    (id) => `# Utility functions - module ${id}\n\ndef clamp(value, min_val, max_val):\n    return max(min_val, min(value, max_val))\n\ndef flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(item)\n        else:\n            result.append(item)\n    return result\n\ndef unique(items):\n    seen = set()\n    result = []\n    for x in items:\n        if x not in seen:\n            seen.add(x)\n            result.append(x)\n    return result`,
     (id) => `# String helpers - module ${id}\n\ndef capitalize_words(text):\n    return ' '.join(w.capitalize() for w in text.split())\n\ndef is_palindrome(text):\n    cleaned = text.lower().replace(' ', '')\n    return cleaned == cleaned[::-1]`,
   ],
 };
