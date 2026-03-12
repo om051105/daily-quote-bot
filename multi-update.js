@@ -8,6 +8,7 @@ const https = require('https');
 const USERNAME    = process.env.GH_USERNAME || 'om051105';
 const TOKEN       = process.env.GH_PAT;
 const GEMINI_KEY  = process.env.GEMINI_API_KEY;
+const OPENAI_KEY  = process.env.OPENAI_API_KEY;
 const NOTIFY_ISSUE = process.env.NOTIFY_ISSUE || '1'; // issue # for phone notifs
 const ROTATION_FILE = path.join(__dirname, 'rotation_log.json');
 
@@ -180,6 +181,50 @@ function gemini(prompt) {
   });
 }
 
+// ─── OPENAI API ──────────────────────────────────────────────────────────────
+function openai(prompt) {
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 700,
+      temperature: 0.85
+    });
+    const req = https.request({
+      hostname: 'api.openai.com',
+      path: '/v1/chat/completions',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENAI_KEY}`
+      },
+    }, res => {
+      let out = '';
+      res.on('data', c => out += c);
+      res.on('end', () => {
+        try {
+          const t = JSON.parse(out)?.choices?.[0]?.message?.content || '';
+          resolve(t.replace(/```[\w]*\n?/g,'').replace(/```$/,'').trim());
+        } catch(e) { reject(e); }
+      });
+    });
+    req.on('error', reject);
+    req.write(body); req.end();
+  });
+}
+
+async function askAI(prompt) {
+  if (OPENAI_KEY) {
+    console.log('    🤖 Using OpenAI API...');
+    return openai(prompt);
+  } else if (GEMINI_KEY) {
+    console.log('    🤖 Using Gemini API...');
+    return gemini(prompt);
+  } else {
+    throw new Error('No AI API key found (GEMINI_API_KEY or OPENAI_API_KEY)');
+  }
+}
+
 // ─── FILE NAMING ─────────────────────────────────────────────────────────────
 function newFileName(ext, isTest=false) {
   const prefixes = ['core','shared','app','base','internal','common','lib'];
@@ -196,7 +241,7 @@ ${contextCode ? `Existing code sample:\n\`\`\`\n${contextCode.slice(0,600)}\n\`\
 Write a NEW standalone ${lang} file with 3-4 REAL working utility functions.
 - Proper comments, no placeholders, no external imports (builtins only), max 55 lines.
 Output ONLY the code.`;
-  return gemini(prompt);
+  return askAI(prompt);
 }
 
 async function genTests(repoName, lang, utilCode) {
@@ -204,7 +249,7 @@ async function genTests(repoName, lang, utilCode) {
 Given this utility code:\n\`\`\`\n${utilCode.slice(0,500)}\n\`\`\`
 Write a test file (using builtins/standard test framework for ${lang}) that tests these functions.
 Max 40 lines. Output ONLY the code.`;
-  return gemini(prompt);
+  return askAI(prompt);
 }
 
 // ─── ISSUE WORKFLOW ──────────────────────────────────────────────────────────

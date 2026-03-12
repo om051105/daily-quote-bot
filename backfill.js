@@ -8,6 +8,7 @@ const https = require('https');
 const USERNAME     = process.env.GH_USERNAME || 'om051105';
 const TOKEN        = process.env.GH_PAT;
 const GEMINI_KEY   = process.env.GEMINI_API_KEY;
+const OPENAI_KEY   = process.env.OPENAI_API_KEY;
 const START_DATE   = process.env.START_DATE   || '2025-01-01';
 const END_DATE     = process.env.END_DATE     || '2025-12-31';
 const FILL_DENSITY = parseFloat(process.env.FILL_DENSITY || '0.3');
@@ -75,6 +76,50 @@ function gemini(prompt) {
   });
 }
 
+// ─── OPENAI API ──────────────────────────────────────────────────────────────
+function openai(prompt) {
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 500,
+      temperature: 0.9
+    });
+    const req = https.request({
+      hostname: 'api.openai.com',
+      path: '/v1/chat/completions',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENAI_KEY}`
+      },
+    }, res => {
+      let out = '';
+      res.on('data', c => out += c);
+      res.on('end', () => {
+        try {
+          const t = JSON.parse(out)?.choices?.[0]?.message?.content || '';
+          resolve(t.replace(/```[\w]*\n?/g,'').replace(/```$/,'').trim());
+        } catch(e) { reject(e); }
+      });
+    });
+    req.on('error', reject);
+    req.write(body); req.end();
+  });
+}
+
+async function askAI(prompt) {
+  if (OPENAI_KEY) {
+    console.log('    🤖 Using OpenAI API...');
+    return openai(prompt);
+  } else if (GEMINI_KEY) {
+    console.log('    🤖 Using Gemini API...');
+    return gemini(prompt);
+  } else {
+    throw new Error('No AI API key found (GEMINI_API_KEY or OPENAI_API_KEY)');
+  }
+}
+
 function newFileName(ext) {
   const prefixes = ['archived','legacy','history','bkp','v1','old'];
   const mids     = ['utils','helpers','logic','tools','internal'];
@@ -105,7 +150,7 @@ async function backfillRepo(repoName, startDate, endDate, density) {
         const timestamp = `${dateStr}T${ri(9,20).toString().padStart(2,'0')}:${ri(10,59).toString().padStart(2,'0')}:00`;
         
         console.log(`  🤖 generating code for ${dateStr}...`);
-        const code = await gemini(`Write a standalone ${lang} utility file with 3 functions. Max 45 lines. ONLY CODE.`);
+        const code = await askAI(`Write a standalone ${lang} utility file with 3 functions. Max 45 lines. ONLY CODE.`);
         
         if (code && code.length > 50) {
           const file = newFileName(ext);
@@ -140,8 +185,12 @@ async function backfillRepo(repoName, startDate, endDate, density) {
 }
 
 async function main() {
-  if (!TOKEN || !GEMINI_KEY) {
-    console.error("❌ Missing GH_PAT or GEMINI_API_KEY env vars!");
+  if (!TOKEN) {
+    console.error("❌ Missing GH_PAT env var!");
+    return;
+  }
+  if (!GEMINI_KEY && !OPENAI_KEY) {
+    console.error("❌ Missing both GEMINI_API_KEY and OPENAI_API_KEY! At least one is required.");
     return;
   }
   console.log(`📡 AI Backfill: ${START_DATE} to ${END_DATE} (Density: ${FILL_DENSITY})`);

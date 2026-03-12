@@ -34,6 +34,7 @@ jobs:
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GH_USERNAME: om051105
           NOTIFY_ISSUE: '1'
         run: node multi-update.js
