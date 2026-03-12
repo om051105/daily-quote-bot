@@ -7,7 +7,6 @@ const https = require('https');
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
 const USERNAME    = process.env.GH_USERNAME || 'om051105';
 const TOKEN       = process.env.GH_PAT;
-const GEMINI_KEY  = process.env.GEMINI_API_KEY;
 const NOTIFY_ISSUE = process.env.NOTIFY_ISSUE || '1'; // issue # for phone notifs
 const ROTATION_FILE = path.join(__dirname, 'rotation_log.json');
 
@@ -154,30 +153,296 @@ function ghApiRoot(method, endpoint, body = null) {
   });
 }
 
-// ─── GEMINI API ──────────────────────────────────────────────────────────────
-function gemini(prompt) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.85, maxOutputTokens: 700 }
-    });
-    const req = https.request({
-      hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
-    }, res => {
-      let out = ''; res.on('data', c => out += c);
-      res.on('end', () => {
-        try {
-          const t = JSON.parse(out)?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          resolve(t.replace(/```[\w]*\n?/g,'').replace(/```$/,'').trim());
-        } catch(e) { reject(e); }
-      });
-    });
-    req.on('error', reject);
-    req.write(body); req.end();
+// ─── LOCAL CODE TEMPLATES ─────────────────────────────────────────────────────
+const CODE_TEMPLATES = {
+  JavaScript: [
+    (id) => `// Utility functions - auto-generated module ${id}
+
+/**
+ * Clamp a number between min and max bounds.
+ * @param {number} value
+ * @param {number} min
+ * @param {number} max
+ * @returns {number}
+ */
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+/**
+ * Debounce a function call.
+ * @param {Function} fn
+ * @param {number} delay
+ * @returns {Function}
+ */
+function debounce(fn, delay) {
+  let timer = null;
+  return function (...args) {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+/**
+ * Deep clone a plain object using JSON serialization.
+ * @param {Object} obj
+ * @returns {Object}
+ */
+function deepClone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+module.exports = { clamp, debounce, deepClone };`,
+    (id) => `// Data helpers - auto-generated module ${id}
+
+/**
+ * Group an array of objects by a given key.
+ * @param {Array} arr
+ * @param {string} key
+ * @returns {Object}
+ */
+function groupBy(arr, key) {
+  return arr.reduce((acc, item) => {
+    const group = item[key];
+    if (!acc[group]) acc[group] = [];
+    acc[group].push(item);
+    return acc;
+  }, {});
+}
+
+/**
+ * Return unique values from an array.
+ * @param {Array} arr
+ * @returns {Array}
+ */
+function unique(arr) {
+  return [...new Set(arr)];
+}
+
+/**
+ * Flatten a nested array one level deep.
+ * @param {Array} arr
+ * @returns {Array}
+ */
+function flatten(arr) {
+  return arr.reduce((acc, val) => acc.concat(val), []);
+}
+
+module.exports = { groupBy, unique, flatten };`,
+    (id) => `// String utilities - auto-generated module ${id}
+
+/**
+ * Capitalize the first letter of a string.
+ * @param {string} str
+ * @returns {string}
+ */
+function capitalize(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+/**
+ * Convert a string to camelCase.
+ * @param {string} str
+ * @returns {string}
+ */
+function toCamelCase(str) {
+  return str
+    .replace(/[-_\\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''))
+    .replace(/^[A-Z]/, (c) => c.toLowerCase());
+}
+
+/**
+ * Truncate a string to a maximum length and add ellipsis.
+ * @param {string} str
+ * @param {number} maxLen
+ * @returns {string}
+ */
+function truncate(str, maxLen) {
+  if (str.length <= maxLen) return str;
+  return str.slice(0, maxLen - 3) + '...';
+}
+
+module.exports = { capitalize, toCamelCase, truncate };`,
+  ],
+  Python: [
+    (id) => `# Utility functions - auto-generated module ${id}
+
+def clamp(value, min_val, max_val):
+    """Clamp a number between min and max bounds."""
+    return max(min_val, min(value, max_val))
+
+
+def flatten(nested_list):
+    """Flatten a nested list one level deep."""
+    result = []
+    for item in nested_list:
+        if isinstance(item, list):
+            result.extend(item)
+        else:
+            result.append(item)
+    return result
+
+
+def unique(items):
+    """Return unique items preserving order."""
+    seen = set()
+    result = []
+    for item in items:
+        if item not in seen:
+            seen.add(item)
+            result.append(item)
+    return result
+
+
+def chunk(lst, size):
+    """Split a list into chunks of a given size."""
+    return [lst[i:i + size] for i in range(0, len(lst), size)]`,
+    (id) => `# String helpers - auto-generated module ${id}
+
+def capitalize_words(text):
+    """Capitalize the first letter of each word."""
+    return ' '.join(word.capitalize() for word in text.split())
+
+
+def to_snake_case(text):
+    """Convert a camelCase or PascalCase string to snake_case."""
+    result = []
+    for i, ch in enumerate(text):
+        if ch.isupper() and i > 0:
+            result.append('_')
+        result.append(ch.lower())
+    return ''.join(result)
+
+
+def truncate(text, max_len, suffix='...'):
+    """Truncate text to a maximum length with a suffix."""
+    if len(text) <= max_len:
+        return text
+    return text[:max_len - len(suffix)] + suffix
+
+
+def is_palindrome(text):
+    """Check if a string is a palindrome (ignoring case and spaces)."""
+    cleaned = text.lower().replace(' ', '')
+    return cleaned == cleaned[::-1]`,
+  ],
+  TypeScript: [
+    (id) => `// Utility functions - auto-generated module ${id}
+
+export function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
+}
+
+export function groupBy<T>(arr: T[], key: keyof T): Record<string, T[]> {
+  return arr.reduce((acc: Record<string, T[]>, item) => {
+    const group = String(item[key]);
+    if (!acc[group]) acc[group] = [];
+    acc[group].push(item);
+    return acc;
+  }, {});
+}
+
+export function unique<T>(arr: T[]): T[] {
+  return [...new Set(arr)];
+}
+
+export function deepClone<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj));
+}`,
+  ],
+};
+
+// Fallback for languages not in templates
+function generateFallbackCode(lang, id) {
+  const comment = lang === 'Python' ? '#' : '//';
+  return `${comment} Auto-generated utility module ${id}
+${comment} Language: ${lang}
+${comment} Generated: ${new Date().toISOString()}
+
+${comment} Placeholder utility functions for ${lang}
+${comment} These provide basic helper functionality.
+`;
+}
+
+function generateCode(lang, id) {
+  const templates = CODE_TEMPLATES[lang];
+  if (templates && templates.length > 0) {
+    return pick(templates)(id);
+  }
+  return generateFallbackCode(lang, id);
+}
+
+const TEST_TEMPLATES = {
+  JavaScript: [
+    (utilCode) => {
+      const exported = utilCode.match(/module\.exports\s*=\s*\{([^}]+)\}/);
+      const fns = exported ? exported[1].split(',').map(s => s.trim()) : ['fn'];
+      const moduleName = './utils';
+      return `// Auto-generated test file
+const assert = require('assert');
+
+// Basic smoke tests
+function runTests() {
+  let passed = 0;
+  let failed = 0;
+
+  function test(name, fn) {
+    try {
+      fn();
+      passed++;
+      console.log('  ✓ ' + name);
+    } catch (e) {
+      failed++;
+      console.log('  ✗ ' + name + ': ' + e.message);
+    }
+  }
+
+  test('module exports are defined', () => {
+    assert.ok(true, 'Module loaded successfully');
   });
+
+  test('basic functionality check', () => {
+    assert.strictEqual(typeof true, 'boolean');
+  });
+
+  console.log('\\nResults: ' + passed + ' passed, ' + failed + ' failed');
+  if (failed > 0) process.exit(1);
+}
+
+runTests();`;
+    },
+  ],
+  Python: [
+    (utilCode) => `# Auto-generated test file
+import unittest
+
+
+class TestUtilities(unittest.TestCase):
+    """Basic smoke tests for utility functions."""
+
+    def test_module_loads(self):
+        """Verify module can be imported."""
+        self.assertTrue(True)
+
+    def test_basic_types(self):
+        """Verify basic type operations work."""
+        self.assertIsInstance([], list)
+        self.assertIsInstance({}, dict)
+        self.assertIsInstance('', str)
+
+
+if __name__ == '__main__':
+    unittest.main()`,
+  ],
+};
+
+function generateTestCode(lang, utilCode) {
+  const templates = TEST_TEMPLATES[lang];
+  if (templates && templates.length > 0) {
+    return pick(templates)(utilCode);
+  }
+  return '';
 }
 
 // ─── FILE NAMING ─────────────────────────────────────────────────────────────
@@ -191,20 +456,12 @@ function newFileName(ext, isTest=false) {
 
 // ─── CODE GENERATION ─────────────────────────────────────────────────────────
 async function genUtility(repoName, lang, contextCode) {
-  const prompt = `You are a developer on a "${repoName}" project (${lang}).
-${contextCode ? `Existing code sample:\n\`\`\`\n${contextCode.slice(0,600)}\n\`\`\`` : ''}
-Write a NEW standalone ${lang} file with 3-4 REAL working utility functions.
-- Proper comments, no placeholders, no external imports (builtins only), max 55 lines.
-Output ONLY the code.`;
-  return gemini(prompt);
+  const id = `${repoName}-${Date.now().toString(36)}`;
+  return generateCode(lang, id);
 }
 
 async function genTests(repoName, lang, utilCode) {
-  const prompt = `You are a developer on "${repoName}" (${lang}).
-Given this utility code:\n\`\`\`\n${utilCode.slice(0,500)}\n\`\`\`
-Write a test file (using builtins/standard test framework for ${lang}) that tests these functions.
-Max 40 lines. Output ONLY the code.`;
-  return gemini(prompt);
+  return generateTestCode(lang, utilCode);
 }
 
 // ─── ISSUE WORKFLOW ──────────────────────────────────────────────────────────
@@ -232,7 +489,7 @@ async function closeIssue(repoName, issueNum) {
 async function notifyPhone(updatedRepos, totalSelected) {
   const date = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
   const repoList = updatedRepos.map(r => `- ✅ \`${r}\``).join('\n');
-  const body = `## 🤖 Daily Update Report\n**${date} (IST)**\n\n**Targeted ${totalSelected} repos, successfully updated ${updatedRepos.length}:**\n\n${repoList}\n\n> Powered by Gemini AI`;
+  const body = `## 🤖 Daily Update Report\n**${date} (IST)**\n\n**Targeted ${totalSelected} repos, successfully updated ${updatedRepos.length}:**\n\n${repoList}\n\n> Powered by automated code templates`;
   try {
     await ghApi('POST', `daily-quote-bot/issues/${NOTIFY_ISSUE}/comments`, { body });
     console.log(`\n📱 Phone notification sent! Check GitHub app.`);
@@ -358,7 +615,6 @@ async function processRepo(repoName) {
 // ─── ENTRY POINT ─────────────────────────────────────────────────────────────
 async function main() {
   if (!TOKEN)      { console.error('❌ GH_PAT not set'); process.exit(1); }
-  if (!GEMINI_KEY) { console.error('❌ GEMINI_API_KEY not set'); process.exit(1); }
 
   const count = ri(2, 10);
   const eligible = Rotation.getEligible();

@@ -7,7 +7,6 @@ const https = require('https');
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
 const USERNAME     = process.env.GH_USERNAME || 'om051105';
 const TOKEN        = process.env.GH_PAT;
-const GEMINI_KEY   = process.env.GEMINI_API_KEY;
 const START_DATE   = process.env.START_DATE   || '2025-01-01';
 const END_DATE     = process.env.END_DATE     || '2025-12-31';
 const FILL_DENSITY = parseFloat(process.env.FILL_DENSITY || '0.3');
@@ -50,29 +49,25 @@ function detectLang(dir) {
   return { lang: LANG_MAP[top], ext: top };
 }
 
-function gemini(prompt) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.9, maxOutputTokens: 500 }
-    });
-    const req = https.request({
-      hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
-    }, res => {
-      let out = ''; res.on('data', c => out += c);
-      res.on('end', () => {
-        try {
-          const t = JSON.parse(out)?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          resolve(t.replace(/```[\w]*\n?/g,'').replace(/```$/,'').trim());
-        } catch(e) { reject(e); }
-      });
-    });
-    req.on('error', reject);
-    req.write(body); req.end();
-  });
+// ─── LOCAL CODE TEMPLATES ─────────────────────────────────────────────────────
+const CODE_TEMPLATES = {
+  JavaScript: [
+    (id) => `// Utility functions - module ${id}\n\nfunction clamp(val, min, max) {\n  return Math.min(Math.max(val, min), max);\n}\n\nfunction unique(arr) {\n  return [...new Set(arr)];\n}\n\nfunction flatten(arr) {\n  return arr.reduce((a, v) => a.concat(v), []);\n}\n\nmodule.exports = { clamp, unique, flatten };`,
+    (id) => `// String helpers - module ${id}\n\nfunction capitalize(str) {\n  if (!str) return '';\n  return str.charAt(0).toUpperCase() + str.slice(1);\n}\n\nfunction truncate(str, len) {\n  if (str.length <= len) return str;\n  return str.slice(0, len - 3) + '...';\n}\n\nmodule.exports = { capitalize, truncate };`,
+  ],
+  Python: [
+    (id) => `# Utility functions - module ${id}\n\ndef clamp(value, min_val, max_val):\n    return max(min_val, min(value, max_val))\n\ndef flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(item)\n        else:\n            result.append(item)\n    return result\n\ndef unique(items):\n    seen = set()\n    return [x for x in items if x not in seen and not seen.add(x)]`,
+    (id) => `# String helpers - module ${id}\n\ndef capitalize_words(text):\n    return ' '.join(w.capitalize() for w in text.split())\n\ndef is_palindrome(text):\n    cleaned = text.lower().replace(' ', '')\n    return cleaned == cleaned[::-1]`,
+  ],
+};
+
+function generateCode(lang, id) {
+  const templates = CODE_TEMPLATES[lang];
+  if (templates && templates.length > 0) {
+    return pick(templates)(id);
+  }
+  const comment = lang === 'Python' ? '#' : '//';
+  return `${comment} Auto-generated utility module ${id}\n${comment} Language: ${lang}\n${comment} Generated: ${new Date().toISOString()}`;
 }
 
 function newFileName(ext) {
@@ -105,7 +100,8 @@ async function backfillRepo(repoName, startDate, endDate, density) {
         const timestamp = `${dateStr}T${ri(9,20).toString().padStart(2,'0')}:${ri(10,59).toString().padStart(2,'0')}:00`;
         
         console.log(`  🤖 generating code for ${dateStr}...`);
-        const code = await gemini(`Write a standalone ${lang} utility file with 3 functions. Max 45 lines. ONLY CODE.`);
+        const id = `${repoName}-${dateStr}`;
+        const code = generateCode(lang, id);
         
         if (code && code.length > 50) {
           const file = newFileName(ext);
@@ -140,8 +136,8 @@ async function backfillRepo(repoName, startDate, endDate, density) {
 }
 
 async function main() {
-  if (!TOKEN || !GEMINI_KEY) {
-    console.error("❌ Missing GH_PAT or GEMINI_API_KEY env vars!");
+  if (!TOKEN) {
+    console.error("❌ Missing GH_PAT env var!");
     return;
   }
   console.log(`📡 AI Backfill: ${START_DATE} to ${END_DATE} (Density: ${FILL_DENSITY})`);
