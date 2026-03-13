@@ -441,7 +441,7 @@ async function main() {
   if (!TOKEN)      { console.error('❌ GH_PAT not set'); process.exit(1); }
   if (!GEMINI_KEY) { console.error('❌ GEMINI_API_KEY not set'); process.exit(1); }
 
-  const count = ri(2, 10);
+  const count = ri(10, 18);
   const eligible = Rotation.getEligible();
   const selected = shuffle(eligible).slice(0, count);
 
