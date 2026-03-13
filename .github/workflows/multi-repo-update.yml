@@ -2,7 +2,7 @@ name: Project Maintenance & Quality Check
 
 on:
   schedule:
-    - cron: '0 23 * * *'  # 11 PM UTC
+    - cron: '0 */4 * * *'  # Every 4 hours
   workflow_dispatch:
 
 # Lock all workflows in the repo to ONE run at a time to prevent push conflicts
@@ -21,7 +21,7 @@ jobs:
 
       - name: Random delay (looks more natural)
         run: |
-          DELAY=$((RANDOM % 5400))
+          DELAY=$((RANDOM % 7200))
           echo "Sleeping ${DELAY}s before starting..."
           sleep $DELAY
 

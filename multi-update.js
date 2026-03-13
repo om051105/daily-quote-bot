@@ -414,7 +414,7 @@ async function main() {
     process.exit(1);
   }
 
-  const count = ri(10, 18);
+  const count = ri(3, 6);
   const eligible = Rotation.getEligible();
   const selected = shuffle(eligible).slice(0, count);
 
