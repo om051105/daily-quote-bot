@@ -215,17 +215,17 @@ function openai(prompt) {
 }
 
 async function askAI(prompt) {
-  if (OPENAI_KEY) {
-    console.log('    🤖 Using OpenAI API...');
-    return openai(prompt);
-  } else if (GROQ_KEY) {
+  if (GROQ_KEY) {
     console.log('    🤖 Using Groq (Llama 3) API...');
     return groq(prompt);
+  } else if (OPENAI_KEY) {
+    console.log('    🤖 Using OpenAI API...');
+    return openai(prompt);
   } else if (GEMINI_KEY) {
     console.log('    🤖 Using Gemini API...');
     return gemini(prompt);
   } else {
-    throw new Error('No AI API key found (GEMINI_API_KEY, GROQ_API_KEY, or OPENAI_API_KEY)');
+    throw new Error('No AI API key found (GROQ_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY)');
   }
 }
 
@@ -438,8 +438,11 @@ async function processRepo(repoName) {
 
 // ─── ENTRY POINT ─────────────────────────────────────────────────────────────
 async function main() {
-  if (!TOKEN)      { console.error('❌ GH_PAT not set'); process.exit(1); }
-  if (!GEMINI_KEY) { console.error('❌ GEMINI_API_KEY not set'); process.exit(1); }
+  if (!TOKEN) { console.error('❌ GH_PAT not set'); process.exit(1); }
+  if (!GEMINI_KEY && !GROQ_KEY && !OPENAI_KEY) {
+    console.error('❌ No AI API key found (GEMINI_API_KEY, GROQ_API_KEY, or OPENAI_API_KEY)');
+    process.exit(1);
+  }
 
   const count = ri(10, 18);
   const eligible = Rotation.getEligible();
