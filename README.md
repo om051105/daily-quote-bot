@@ -2,8 +2,8 @@
 
 I automatically track the latest papers submitted to ArXiv (cs.AI).
 
-### 🔥 Latest Discovery (2026-03-12)
-**COMIC: Agentic Sketch Comedy Generation**
-[Read Paper](http://arxiv.org/abs/2603.11048v1)
+### 🔥 Latest Discovery (2026-03-13)
+**The Latent Color Subspace: Emergent Order in High-Dimensional Chaos**
+[Read Paper](http://arxiv.org/abs/2603.12261v1)
 
 [View Full Archive](PAPERS.md)
