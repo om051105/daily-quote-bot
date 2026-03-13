@@ -7,7 +7,6 @@ const https = require('https');
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
 const USERNAME    = process.env.GH_USERNAME || 'om051105';
 const TOKEN       = process.env.GH_PAT;
-const GEMINI_KEY  = process.env.GEMINI_API_KEY;
 const OPENAI_KEY  = process.env.OPENAI_API_KEY;
 const GROQ_KEY    = process.env.GROQ_API_KEY;
 const NOTIFY_ISSUE = process.env.NOTIFY_ISSUE || '1'; // issue # for phone notifs
@@ -156,32 +155,6 @@ function ghApiRoot(method, endpoint, body = null) {
   });
 }
 
-// ─── GEMINI API ──────────────────────────────────────────────────────────────
-function gemini(prompt) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.85, maxOutputTokens: 700 }
-    });
-    const req = https.request({
-      hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
-    }, res => {
-      let out = ''; res.on('data', c => out += c);
-      res.on('end', () => {
-        try {
-          const t = JSON.parse(out)?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          resolve(t.replace(/```[\w]*\n?/g,'').replace(/```$/,'').trim());
-        } catch(e) { reject(e); }
-      });
-    });
-    req.on('error', reject);
-    req.write(body); req.end();
-  });
-}
-
 // ─── OPENAI API ──────────────────────────────────────────────────────────────
 function openai(prompt) {
   return new Promise((resolve, reject) => {
@@ -221,11 +194,8 @@ async function askAI(prompt) {
   } else if (OPENAI_KEY) {
     console.log('    🤖 Using OpenAI API...');
     return openai(prompt);
-  } else if (GEMINI_KEY) {
-    console.log('    🤖 Using Gemini API...');
-    return gemini(prompt);
   } else {
-    throw new Error('No AI API key found (GROQ_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY)');
+    throw new Error('No AI API key found (GROQ_API_KEY or OPENAI_API_KEY)');
   }
 }
 
@@ -439,8 +409,8 @@ async function processRepo(repoName) {
 // ─── ENTRY POINT ─────────────────────────────────────────────────────────────
 async function main() {
   if (!TOKEN) { console.error('❌ GH_PAT not set'); process.exit(1); }
-  if (!GEMINI_KEY && !GROQ_KEY && !OPENAI_KEY) {
-    console.error('❌ No AI API key found (GEMINI_API_KEY, GROQ_API_KEY, or OPENAI_API_KEY)');
+  if (!GROQ_KEY && !OPENAI_KEY) {
+    console.error('❌ No AI API key found (GROQ_API_KEY or OPENAI_API_KEY)');
     process.exit(1);
   }
 

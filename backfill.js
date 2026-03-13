@@ -7,7 +7,6 @@ const https = require('https');
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
 const USERNAME     = process.env.GH_USERNAME || 'om051105';
 const TOKEN        = process.env.GH_PAT;
-const GEMINI_KEY   = process.env.GEMINI_API_KEY;
 const OPENAI_KEY   = process.env.OPENAI_API_KEY;
 const GROQ_KEY     = process.env.GROQ_API_KEY;
 const START_DATE   = process.env.START_DATE   || '2025-01-01';
@@ -52,31 +51,6 @@ function detectLang(dir) {
   return { lang: LANG_MAP[top], ext: top };
 }
 
-function gemini(prompt) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.9, maxOutputTokens: 500 }
-    });
-    const req = https.request({
-      hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
-    }, res => {
-      let out = ''; res.on('data', c => out += c);
-      res.on('end', () => {
-        try {
-          const t = JSON.parse(out)?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          resolve(t.replace(/```[\w]*\n?/g,'').replace(/```$/,'').trim());
-        } catch(e) { reject(e); }
-      });
-    });
-    req.on('error', reject);
-    req.write(body); req.end();
-  });
-}
-
 // ─── OPENAI API ──────────────────────────────────────────────────────────────
 function openai(prompt) {
   return new Promise((resolve, reject) => {
@@ -110,17 +84,14 @@ function openai(prompt) {
 }
 
 async function askAI(prompt) {
-  if (OPENAI_KEY) {
-    console.log('    🤖 Using OpenAI API...');
-    return openai(prompt);
-  } else if (GROQ_KEY) {
+  if (GROQ_KEY) {
     console.log('    🤖 Using Groq (Llama 3) API...');
     return groq(prompt);
-  } else if (GEMINI_KEY) {
-    console.log('    🤖 Using Gemini API...');
-    return gemini(prompt);
+  } else if (OPENAI_KEY) {
+    console.log('    🤖 Using OpenAI API...');
+    return openai(prompt);
   } else {
-    throw new Error('No AI API key found (GEMINI_API_KEY, GROQ_API_KEY, or OPENAI_API_KEY)');
+    throw new Error('No AI API key found (GROQ_API_KEY or OPENAI_API_KEY)');
   }
 }
 
@@ -225,8 +196,8 @@ async function main() {
     console.error("❌ Missing GH_PAT env var!");
     return;
   }
-  if (!GEMINI_KEY && !OPENAI_KEY && !GROQ_KEY) {
-    console.error("❌ Missing AI API key! At least one is required: GEMINI_API_KEY, GROQ_API_KEY, or OPENAI_API_KEY.");
+  if (!OPENAI_KEY && !GROQ_KEY) {
+    console.error("❌ Missing AI API key! At least one is required: GROQ_API_KEY or OPENAI_API_KEY.");
     return;
   }
   console.log(`📡 AI Backfill: ${START_DATE} to ${END_DATE} (Density: ${FILL_DENSITY})`);
