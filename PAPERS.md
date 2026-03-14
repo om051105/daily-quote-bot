@@ -68,3 +68,4 @@
 | 2026-03-11 | [From Data Statistics to Feature Geometry: How Correlations Shape Superposition](http://arxiv.org/abs/2603.09972v1) | AI/ML |
 | 2026-03-12 | [COMIC: Agentic Sketch Comedy Generation](http://arxiv.org/abs/2603.11048v1) | AI/ML |
 | 2026-03-13 | [The Latent Color Subspace: Emergent Order in High-Dimensional Chaos](http://arxiv.org/abs/2603.12261v1) | AI/ML |
+| 2026-03-14 | [The Latent Color Subspace: Emergent Order in High-Dimensional Chaos](http://arxiv.org/abs/2603.12261v1) | AI/ML |
